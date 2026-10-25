@@ -1,0 +1,9 @@
+{
+  "bytes": 1243864,
+  "triangles": 47656,
+  "meshNodes": 10,
+  "materials": 5,
+  "texture": "embedded 256x256 PNG normal map",
+  "structuralChecks": "passed",
+  "browserChecks": "blocked: admin policy verification unavailable"
+}

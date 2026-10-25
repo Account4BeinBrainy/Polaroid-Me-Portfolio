@@ -1,0 +1,71 @@
+/* Only .pd-* selectors: do not overwrite camera/box/loader styling. */
+.pd-modal {
+  position:relative;
+  box-sizing:border-box; width:min(90vw,1280px); height:88svh; max-width:none;
+  max-height:90svh; margin:auto; padding:0; border:1px solid rgb(242 248 249 / .72);
+  border-radius:24px; color:#17191a;
+  background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(235,243,246,.12));
+  -webkit-backdrop-filter:blur(10px) saturate(110%);backdrop-filter:blur(10px) saturate(110%);
+  box-shadow:0 18px 50px rgb(25 35 45 / .12),inset 0 1px 0 rgb(255 255 255 / .62),inset -1px -1px 0 rgb(98 133 142 / .16);overflow:hidden;
+}
+.pd-modal[open] {display:block; animation:pd-enter 180ms ease-out both;}
+.pd-modal::backdrop {background:rgba(248,247,243,.04);animation:pd-backdrop-in 180ms ease-out both;}
+.pd-modal.is-closing {animation:pd-leave 170ms ease-in both;}
+.pd-modal.is-closing::backdrop {animation:pd-backdrop-out 170ms ease-in both;}
+.pd-back { position:absolute;z-index:1;top:22px;right:28px;display:inline-flex;align-items:center;gap:6px;padding:7px 4px;border:0;background:none;color:inherit;cursor:pointer;font:28px/1 var(--project-handwriting,'Sound Seekers',cursive); transform-origin:center; }
+.pd-back svg {width:54px;height:37px;pointer-events:none;}
+.pd-slide-controls button:focus-visible {outline:2px solid currentColor;outline-offset:5px;}
+.pd-modal__content {position:relative;height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:82px clamp(20px,3.1vw,46px) 42px;scrollbar-color:#9aa1a1 transparent;}
+.pd-project-body{transition:opacity 110ms ease;}.pd-project-body.is-switching{opacity:0;}
+.pd-project-nav{position:absolute;z-index:3;top:50%;display:grid;place-items:center;transform:translateY(-50%);border:0;background:none;color:#202425;cursor:pointer;padding:2px;font:32px/1 Georgia,serif;transition:opacity .18s ease,transform .18s ease;}
+.pd-project-nav--prev{left:16px}.pd-project-nav--next{right:16px}.pd-project-nav:hover{opacity:.62;transform:translateY(-50%) scale(1.06)}.pd-project-nav:focus{outline:none}.pd-project-nav:focus-visible{opacity:.62}
+.pd-project-top {display:grid;grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:clamp(24px,2.5vw,40px);align-items:start;}
+.pd-project-copy {min-height:0;overflow:hidden;display:flex;flex-direction:column;font-family:"Times New Roman",Times,serif;}
+.pd-slide-stage {position:relative;aspect-ratio:16/9;background:rgba(255,255,255,.28);display:grid;place-items:center;}
+.pd-slide-stage img {width:100%;height:100%;object-fit:contain;position:absolute;inset:0;}
+.pd-slide-stage [hidden],.pd-slide-controls[hidden]{display:none;}
+.pd-placeholder {color:#666b6c;font:14px/1.5 system-ui,sans-serif;}
+.pd-slide-controls {display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:10px;color:#54595a;font:12px/1.4 system-ui,sans-serif;}
+.pd-slide-controls button {border:0;background:none;color:#252829;font:20px/1 sans-serif;cursor:pointer;padding:8px 12px;}
+.pd-project-copy h2 {flex:none;font:700 clamp(24px,2vw,30px)/1.2 "Times New Roman",Times,serif;margin:0 0 20px;letter-spacing:0;}
+.pd-project-copy p {min-height:0;overflow-y:auto;overscroll-behavior:contain;font:400 clamp(15px,1.1vw,17px)/1.65 "Times New Roman",Times,serif;color:#3f4445;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;scrollbar-width:thin;}
+.pd-photo-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;width:min(100%,880px);margin:28px auto 0;align-items:start;}
+.pd-photo-grid[hidden]{display:none;}
+.pd-single-photo {margin:0;color:#292824;min-width:0;}
+.pd-photo-preview-trigger{cursor:zoom-in;}
+.pd-single-photo__image {display:grid;place-items:center;overflow:hidden;}
+.pd-single-photo__image img {width:100%;height:100%;object-fit:contain;}
+.pd-single-photo figcaption {font:14px/1.4 var(--project-handwriting,'Sound Seekers',cursive);margin-top:8px;overflow-wrap:anywhere;}
+.pd-single-photo figcaption:empty{display:none;}
+.pd-image-preview{box-sizing:border-box;position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:5vh 7vw;border:0;display:none;place-items:center;background:rgba(20,24,26,.18);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 210ms ease-out;cursor:zoom-out;}
+.pd-image-preview[open]{display:grid}.pd-image-preview::backdrop{background:transparent}.pd-image-preview.is-open{opacity:1;pointer-events:auto;transition:opacity 230ms ease-out;}
+.pd-image-preview img{display:block;max-width:80vw;max-height:82vh;width:auto;height:auto;object-fit:contain;transform:scale(.96);transition:transform 230ms cubic-bezier(.22,1,.36,1);box-shadow:0 20px 55px rgba(20,25,28,.2);}
+.pd-image-preview.is-open img{transform:scale(1)}
+@keyframes pd-enter {from{opacity:0;transform:translateY(9px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pd-leave {to{opacity:0;transform:translateY(5px);}}
+@keyframes pd-backdrop-in {from{background:rgba(248,247,243,0);}to{background:rgba(248,247,243,.04);}}
+@keyframes pd-backdrop-out {to{background:rgba(248,247,243,0);}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.pd-modal{background:rgba(248,250,250,.9)}}
+@media(max-width:700px){
+ .pd-modal{width:calc(100vw - 24px);height:92svh;max-height:92svh;border-radius:18px;}
+ .pd-modal__content{padding:72px 20px 34px}.pd-back{top:15px;right:20px;font-size:25px;}
+ .pd-project-top{grid-template-columns:1fr;gap:24px;}.pd-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px;}
+ .pd-project-nav{top:auto;bottom:12px}.pd-project-nav--prev{left:18px}.pd-project-nav--next{right:18px}
+}
+@media(min-width:701px) and (max-width:900px){.pd-project-top{grid-template-columns:1fr;}.pd-project-copy{max-width:680px;}}
+@media(prefers-reduced-motion:reduce){.pd-modal[open],.pd-modal::backdrop,.pd-modal.is-closing,.pd-modal.is-closing::backdrop{animation:none}.pd-project-body,.pd-image-preview,.pd-image-preview img{transition:none}}
+
+/* Project source links inherit the existing copy typography. */
+.pd-project-copy p a { color: inherit; font: inherit; text-decoration: underline; }
+.pd-pdf-region { width: 84%; margin: 36px auto 0; }
+.pd-pdf-region[hidden] { display: none; }
+.pd-pdf-region iframe { display: block; width: 100%; height: clamp(560px,78vh,900px); border: 0; }
+@media(max-width:700px) { .pd-pdf-region { width: 100%; } }
+@media (max-width:768px), (orientation:landscape) and (max-height:500px){
+ .pd-back{min-height:44px;right:max(20px,env(safe-area-inset-right))}
+ .pd-project-nav{min-width:44px;min-height:44px}
+ .pd-project-copy h2{font-size:var(--font-page-title,24px)}
+ .pd-project-copy p{font-size:var(--font-body,15px)}
+ .pd-image-preview{height:100dvh;max-height:100dvh}
+ .pd-image-preview img{max-height:82dvh}
+}

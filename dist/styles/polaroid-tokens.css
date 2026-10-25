@@ -1,0 +1,17 @@
+/* Generated from the same canonical GLB as polaroid-spec.js. */
+:root {
+  --polaroid-paper: #EEEDEA;
+  --polaroid-image-base: #FDFDFC;
+  --polaroid-aspect: 0.8224907063197027;
+  --polaroid-image-ratio: 1;
+  --polaroid-side-border: 5.3672316384%;
+  --polaroid-top-border: 6.1338289963%;
+  --polaroid-bottom-border: 20.4460966543%;
+  --polaroid-image-width: 89.2655367232%;
+  --polaroid-image-height: 73.4200743494%;
+  --polaroid-caption-top: 79.5539033457%;
+  --polaroid-edge-depth: 0.6250000000cqw;
+  --polaroid-radius-x: 0.1363636364%;
+  --polaroid-radius-y: 0.1121578236%;
+  --polaroid-image-fit: cover;
+}

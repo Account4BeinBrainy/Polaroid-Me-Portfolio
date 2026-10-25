@@ -1,0 +1,19 @@
+/
+  Cache-Control: no-cache
+/*.html
+  Cache-Control: no-cache
+/*.js
+  Cache-Control: no-cache
+/*.css
+/js/*
+  Cache-Control: no-cache
+/styles/*
+  Cache-Control: no-cache
+/assets/*
+  Cache-Control: public, max-age=86400, must-revalidate
+/public/model/*
+  Cache-Control: public, max-age=86400, must-revalidate
+/public/models/*
+  Cache-Control: public, max-age=86400, must-revalidate
+/public/fonts/*
+  Cache-Control: public, max-age=86400, must-revalidate

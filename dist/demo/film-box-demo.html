@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Film box module demo</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#F8F7F3;color:#35664b;font:14px system-ui}
+canvas{display:block;width:100%;height:100%;touch-action:pan-y} footer{position:fixed;bottom:24px;left:0;right:0;text-align:center}
+button{font:inherit;color:inherit;background:transparent;border:1px solid #b6c0b6;border-radius:4px;padding:8px 14px;cursor:pointer}
+button:focus-visible{outline:2px solid #35664b;outline-offset:3px}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head>
+<body>
+<footer><button id="open" disabled>打开盒子</button> <button id="reset" disabled>重置 · R</button><p id="status" role="status">正在加载…</p></footer>
+<script type="module">
+import * as THREE from 'three';
+import { createFilmBox } from '../js/film-box-model.js';
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#F8F7F3');
+const renderer = new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping;
+document.body.prepend(renderer.domElement);
+const camera=new THREE.PerspectiveCamera(35,1,0.01,100); camera.position.set(3.3,2.8,5.5); camera.lookAt(0,1.1,0);
+scene.add(new THREE.HemisphereLight('#ffffff','#b5b0a5',2));
+const key=new THREE.DirectionalLight('#fff8ed',3); key.position.set(-3,5,4); scene.add(key);
+const render=()=>renderer.render(scene,camera);
+function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();render();}
+window.addEventListener('resize',resize); resize();
+const status=document.querySelector('#status');
+try {
+  const box=await createFilmBox(scene,{scale:10,onChange:render});
+  const open=async()=>{status.textContent='正在打开…';if(await box.open())status.textContent='已打开 · R 重置';};
+  const reset=()=>{box.reset();status.textContent='点击盒子打开';};
+  document.querySelector('#open').disabled=false;document.querySelector('#reset').disabled=false;
+  document.querySelector('#open').onclick=open;document.querySelector('#reset').onclick=reset;reset();
+  const ray=new THREE.Raycaster(), pointer=new THREE.Vector2();
+  renderer.domElement.addEventListener('click',e=>{
+    const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2);
+    ray.setFromCamera(pointer,camera);if(ray.intersectObject(box.root,true).length)open();
+  });
+  window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='r'&&!e.ctrlKey&&!e.metaKey&&!e.altKey)reset();});
+  window.addEventListener('pagehide',()=>{box.dispose();renderer.dispose();},{once:true});
+} catch(error){status.textContent=`加载失败：${error.message}`;console.error(error);}
+</script>
+</body></html>

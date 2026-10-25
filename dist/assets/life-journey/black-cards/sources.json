@@ -1,0 +1,34 @@
+{
+  "colombia": {
+    "source": "Colombia.JPG",
+    "output": "colombia.png"
+  },
+  "dallas": {
+    "source": "dallas, TX.JPG",
+    "output": "dallas.png"
+  },
+  "italy": {
+    "source": "Italy.JPG",
+    "output": "italy.png"
+  },
+  "england": {
+    "source": "England.JPG",
+    "output": "england.png"
+  },
+  "montreal": {
+    "source": "Montréal.JPG",
+    "output": "montreal.png"
+  },
+  "edmonton": {
+    "source": "edmonton.JPG",
+    "output": "edmonton.png"
+  },
+  "japan": {
+    "source": "Japan.JPG",
+    "output": "japan.png"
+  },
+  "china": {
+    "source": "china.JPG",
+    "output": "china.png"
+  }
+}

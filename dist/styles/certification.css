@@ -1,0 +1,27 @@
+.certification-page{display:block;margin:0;height:100svh;overflow:hidden;background:#F8F7F3;color:#171717}
+.certification-page .certification-orbit{position:fixed;inset:110px 0 16px;overflow:hidden}
+.certification-page .certification-stage{position:absolute;inset:0}
+.certification-page .certification-stage canvas{display:block;width:100%;height:100%;outline:none;touch-action:pan-y}
+.certification-page .certificate-status{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;font:14px system-ui;color:#72766f}
+.certification-page .certificate-status:empty{display:none}
+.certification-page .portfolio-back{color:#000}
+.certification-page .certification-details{box-sizing:border-box;width:min(90vw,1280px);height:88svh;max-width:none;max-height:90svh;margin:auto;padding:0;border:1px solid rgb(242 248 249/.72);border-radius:24px;color:#17191a;background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(235,243,246,.12));-webkit-backdrop-filter:blur(10px) saturate(110%);backdrop-filter:blur(10px) saturate(110%);box-shadow:0 18px 50px rgb(25 35 45/.12),inset 0 1px 0 rgb(255 255 255/.62),inset -1px -1px 0 rgb(98 133 142/.16);overflow:hidden}
+.certification-page .certification-details[open]{display:block}.certification-page .certification-details::backdrop{background:rgba(248,247,243,.04)}
+.certification-page .certification-details-back{position:absolute;z-index:1;top:22px;right:28px;display:inline-flex;align-items:center;gap:6px;padding:7px 4px;border:0;background:none;color:inherit;cursor:pointer;font:28px/1 'Sound Seekers',cursive}
+.certification-page .certification-details-back svg{width:54px;height:37px;pointer-events:none}
+.certification-page .certification-details-content{height:100%;display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:clamp(24px,3vw,40px);align-items:center;padding:82px clamp(20px,3.1vw,46px) 42px;overflow-y:auto;overscroll-behavior:contain}
+.certification-page .certification-polaroid{box-sizing:border-box;width:min(100%,380px,55svh);aspect-ratio:var(--polaroid-aspect);margin:auto;padding:0;position:relative;background:var(--polaroid-paper);border-radius:var(--polaroid-radius-x) / var(--polaroid-radius-y);transform:perspective(1200px) rotateY(-5deg) rotateZ(-2deg);box-shadow:1px 2px 0 #d8d6d0,2px 4px 0 #c8c6c0,0 18px 38px #0003,inset 0 1px 0 #fff9}
+.certification-page .certification-polaroid-image{position:absolute;left:var(--polaroid-side-border);top:var(--polaroid-top-border);width:var(--polaroid-image-width);height:var(--polaroid-image-height);margin:0;aspect-ratio:var(--polaroid-image-ratio);display:flex;align-items:center;justify-content:center;background:#fff!important;box-shadow:inset 0 1px 3px #0002;overflow:hidden}.certification-page .certification-polaroid-image img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center;background:#fff}.certification-page .certification-polaroid-image img[hidden]{display:none}
+.certification-page .certification-details-copy{min-height:0;max-height:100%;overflow-y:auto;overscroll-behavior:contain;font-family:"Times New Roman",Times,serif}.certification-page .certification-details-copy h2{font:700 clamp(24px,2vw,30px)/1.2 "Times New Roman",Times,serif;margin:0 0 20px;letter-spacing:0}.certification-page .certification-details-copy p{font:700 clamp(15px,1.1vw,17px)/1.65 "Times New Roman",Times,serif;color:#303536;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:700px){.certification-page .certification-details{width:calc(100vw - 24px);height:92svh;max-height:92svh;border-radius:18px}.certification-page .certification-details-content{grid-template-columns:1fr;padding:76px 24px 32px;gap:26px;align-content:start}.certification-page .certification-polaroid{width:min(76%,300px)}.certification-page .certification-details-back{top:15px;right:20px;font-size:25px}}
+
+.certification-page .certification-details-copy p a{color:inherit;font:inherit;text-decoration:underline}
+.certification-page .certification-polaroid-image img{cursor:zoom-in}
+.certification-page .certification-details[data-image="uofa"] .certification-polaroid-image img{transform:scale(1.08)}
+.certification-page .certification-details[data-image="google"] .certification-polaroid-image img{transform:scale(1.3);transform-origin:50% 30%}
+.certification-page .pd-image-preview{pointer-events:auto}
+.certification-page .pd-image-preview.is-closing img{transform:scale(.97);transition:transform 210ms ease-out}
+
+.certification-page .certification-details-copy p a{font-weight:400}
+@media (orientation:landscape) and (max-height:500px){.certification-page .certification-orbit{inset:76px 0 8px}}
+@media (max-width:768px), (orientation:landscape) and (max-height:500px){.certification-page .certification-details-back{min-height:44px;right:max(20px,env(safe-area-inset-right))}.certification-page .certification-details-copy h2{font-size:var(--font-page-title,24px)}.certification-page .certification-details-copy p{font-size:var(--font-body,15px)}}

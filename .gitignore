@@ -1,0 +1,10 @@
+.DS_Store
+.sites-runtime/
+output/
+node_modules/
+.vite/
+.env
+.env.*
+!.env.example
+checks/
+_site/

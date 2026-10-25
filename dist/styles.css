@@ -1,0 +1,275 @@
+/* Front-view source: _ (2).jpeg, 736 x 1021.
+   Body bbox: (153,355)..(585,766), 433 x 412; cutout: 459 x 438.
+   The PNG includes 13px transparent padding; stage measures the visible body.
+   Slot anchors only register the existing paper layer to this new photograph. */
+:root {
+  color-scheme: light;
+  --background: #F8F7F3;
+  --camera-width: clamp(300px, 26vw, 410px);
+  --camera-top: 43%;
+  --camera-aspect: 433 / 412;
+  --photo-width: 48%;
+  --photo-aspect: 0.78;
+  --slot-x: 51.963048%;
+  --slot-y: 86.165049%;
+  --paper-path-left: calc(var(--slot-x) - var(--photo-width) / 2);
+  --paper-path-right: calc(var(--slot-x) + var(--photo-width) / 2);
+  --photo-hidden-offset: -100%;
+  --paper-hidden-gap: 24px; /* Also hides the paper's soft shadow at rest. */
+  --eject-distance: calc(70% + var(--paper-hidden-gap));
+  --photo-final-offset: calc(var(--photo-hidden-offset) - var(--paper-hidden-gap) + var(--eject-distance));
+  --paper-color: var(--polaroid-paper);
+  --photo-color: #DEDCD5;
+  --hover-return: 600ms;
+  --object-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --contact-opacity: 0.18;
+  --cast-opacity: 0.10;
+  --cast-offset: clamp(45px, 4.4vw, 65px);
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow-x: hidden; overflow-y: auto; background: var(--background); }
+body { overscroll-behavior-x: none; }
+
+[hidden] { display: none !important; }
+
+#film-box-page, .film-box-canvas, .film-box-links { position: fixed; inset: 0; }
+#film-box-page { background: #F8F7F3; overflow: hidden; }
+.film-box-canvas canvas { display: block; width: 100%; height: 100%; }
+.film-box-links { display: grid; grid-template-columns: repeat(3, minmax(170px, 220px)); align-items: center; justify-content: center; gap: clamp(70px, 8vw, 150px); }
+.film-box-link { position:relative; height:min(42vw,360px); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.film-box-annotation{position:fixed;z-index:2;width:max-content;height:auto;opacity:0;visibility:hidden;transform:translateX(-50%);pointer-events:none;color:#171717;text-align:center;font:clamp(22px,2vw,32px)/1.05 'Sound Seekers',cursive;transition:opacity .7s cubic-bezier(.4,0,.2,1),visibility 0s .7s}
+.film-box-annotation.is-visible{opacity:1;visibility:visible;transition:opacity .7s cubic-bezier(.4,0,.2,1)}
+.film-box-annotation__content{display:block;animation:film-box-annotation-float 2.8s ease-in-out infinite}
+.film-box-annotation__title{display:block;white-space:nowrap;text-align:center}
+.film-box-annotation__time{display:block;font-size:.8em;margin-top:9px;text-align:center}
+#film-box-page{touch-action:pan-y}
+.film-box-link{touch-action:pan-y}
+@keyframes film-box-annotation-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.film-box-link:focus-visible { outline: 1px solid #171717; outline-offset: 12px; }
+.film-box-error { position: fixed; inset: 50% auto auto 50%; transform: translate(-50%, -50%); z-index: 2; text-align: center; color: #171717; }
+.film-box-error button { font: inherit; margin: 6px; padding: 8px 14px; background: transparent; border: 1px solid #171717; cursor: pointer; }
+
+@media (max-width: 768px), (orientation: landscape) and (max-height: 500px) {
+  .film-box-annotation{font-size:clamp(18px,4vw,24px)}
+}
+
+.polaroid-landing {
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  position: relative;
+  background: var(--background);
+  background: radial-gradient(ellipse at 50% 42%, #FBFAF7 0%, #F8F7F3 55%, #F4F2EC 100%);
+}
+
+.camera-stage {
+  position: absolute;
+  top: var(--camera-top);
+  left: 50%;
+  width: var(--camera-width);
+  aspect-ratio: var(--camera-aspect);
+  transform: translate(-50%, -50%);
+  perspective: 900px;
+  isolation: isolate;
+}
+
+.cast-shadow, .contact-shadow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.cast-shadow {
+  z-index: 0;
+  top: calc(100% - 20px);
+  left: calc(50% + var(--cast-offset));
+  width: 65%;
+  height: 55px;
+  background: rgb(54 48 40 / var(--cast-opacity));
+  filter: blur(25px);
+  transform: translateX(-50%) rotate(-5deg);
+}
+
+.contact-shadow {
+  z-index: 1;
+  top: calc(100% - 12px);
+  left: 50%;
+  width: 55%;
+  height: 22px;
+  background: rgb(38 34 28 / var(--contact-opacity));
+  filter: blur(14px);
+  transform: translateX(-50%);
+}
+
+.camera-object {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --tilt-z: 0deg;
+  --lift: 0px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transform-origin: 50% 90%;
+  transform: translateY(var(--lift)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--tilt-z));
+  transition: transform var(--hover-return) var(--object-easing);
+}
+
+.camera-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.camera-frame img {
+  display: block;
+  position: absolute;
+  width: 106.004619%; /* 459 / 433: compensate for transparent padding. */
+  max-width: none;
+  height: auto;
+  left: -3.002309%; /* -13 / 433 */
+  top: -3.155340%; /* -13 / 412 */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.camera-back { z-index: 0; }
+
+/* Contact only: the larger cast shadow is now rendered by the 3D key light. */
+.camera-contact-shadow {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: calc(var(--camera-visual-bottom, 100%) - 9px);
+  width: var(--camera-contact-width, 0px);
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(20, 18, 15, 0.16);
+  filter: blur(14px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* GLB loading stage only: keep the existing paper and interaction CSS intact. */
+.is-legacy-camera { display: none; }
+
+.camera-3d-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  background: transparent;
+}
+
+.camera-3d-layer canvas {
+  display: block;
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent;
+}
+
+.photo-clip {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: var(--slot-y);
+  width: 100%;
+  height: 95%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.photo-card {
+  position: absolute;
+  top: 0;
+  left: var(--paper-path-left);
+  width: var(--photo-width);
+  aspect-ratio: var(--photo-aspect);
+  background: var(--paper-color);
+  box-shadow: 0 6px 16px rgb(25 23 20 / 0.10);
+  transform: translateY(calc(var(--photo-hidden-offset) - var(--paper-hidden-gap)));
+}
+
+.photo-image {
+  position: absolute;
+  left: 8%;
+  top: 6%;
+  width: 84%;
+  aspect-ratio: 1;
+  background: linear-gradient(155deg, #dedcd5 0%, #d7d9d1 58%, #cbd0c6 100%);
+}
+
+.camera-image {
+  z-index: 2;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--paper-path-right) 100%, var(--paper-path-right) var(--slot-y), var(--paper-path-left) var(--slot-y), var(--paper-path-left) 100%, 0 100%);
+}
+
+.camera-trigger {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 12%;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.camera-trigger:focus-visible {
+  outline: 1px solid #7f8176;
+  outline-offset: 12px;
+}
+
+.camera-trigger[aria-disabled="true"] { cursor: default; }
+
+.camera-stage[data-phase="pressing"] .camera-object,
+.camera-stage[data-phase="ejecting"] .camera-object { transition: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 600px) {
+  :root { --camera-width: min(78vw, 62svh, 360px); }
+}
+
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .camera-object { transform: none; transition: none; }
+}
+
+.camera-3d-layer.is-dragging { cursor: grabbing; }
+.camera-3d-layer:focus-visible { outline: none; }
+.camera-3d-layer canvas { pointer-events: none; }
+
+.camera-3d-layer { outline: none; -webkit-tap-highlight-color: transparent; }
+
+.camera-3d-layer.pointer-focus:focus-visible { outline: none; }
+
+#camera-sound-toggle{position:fixed;z-index:999;top:30px;left:30px;width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;padding:0;color:#171717;cursor:pointer;transition:opacity .22s ease}
+#camera-sound-toggle img{width:34px;height:34px;display:block;object-fit:contain}
+#camera-sound-toggle:hover,#camera-sound-toggle:focus-visible{opacity:.72}
+@media (max-width:768px), (orientation:landscape) and (max-height:500px){#camera-sound-toggle{top:max(22px,env(safe-area-inset-top));left:max(22px,env(safe-area-inset-left))}}
+@media (orientation:landscape) and (max-height:500px){.camera-stage{left:calc(50% + 9vw)}}

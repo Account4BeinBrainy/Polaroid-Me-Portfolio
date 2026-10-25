@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Google & Preply · Logo models</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f8f7f3}canvas{display:block;touch-action:none;outline:none}#error{position:fixed;inset:45% 10%;text-align:center;font:15px system-ui;color:#463f35}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head><body><script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { createLogoModel } from '../js/logo-model-viewer.js?v=integrated-20260927-3';
+const scene=new THREE.Scene();scene.background=new THREE.Color('#f8f7f3');
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','Google 与 Preply 薄牌，移动鼠标或拖动可轻微旋转');
+const camera=new THREE.PerspectiveCamera(30,1,.005,10),target=new THREE.Vector3(0,.085,0);
+const pmrem=new THREE.PMREMGenerator(renderer),room=new RoomEnvironment(),env=pmrem.fromScene(room);scene.environment=env.texture;scene.environmentIntensity=.65;room.dispose();pmrem.dispose();
+const key=new THREE.DirectionalLight(0xfff8ed,1.8);key.position.set(-.4,.65,.5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-.48,right:.48,top:.4,bottom:-.4,near:.01,far:2});key.shadow.bias=-.00015;key.shadow.normalBias=.0003;key.shadow.radius=4;scene.add(key);
+const fill=new THREE.DirectionalLight(0xeef2f5,.36);fill.position.set(.4,.25,.4);scene.add(fill);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.ShadowMaterial({color:0x494039,opacity:.17}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+function resize(){camera.aspect=innerWidth/innerHeight;const distance=Math.max(.75,1.36/camera.aspect);camera.position.set(0,.23,1).normalize().multiplyScalar(distance).add(target);camera.lookAt(target);camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}resize();addEventListener('resize',resize);
+let models=[];const pointer=new THREE.Vector2(2,2),ray=new THREE.Raycaster(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+renderer.domElement.addEventListener('pointermove',e=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2)});
+renderer.domElement.addEventListener('pointerleave',()=>pointer.set(2,2));
+try{
+ models=await Promise.all(['google','preply'].map((type,i)=>createLogoModel(scene,{type,position:[i===0?-.18:.18,.094,0],rotation:[0,i===0?.035:-.035,0],scale:1})));
+ document.body.dataset.loadState='ready';
+}catch(error){document.body.dataset.loadState='error';const p=document.createElement('p');p.id='error';p.textContent='模型加载失败，请通过 HTTP 服务打开预览页。';document.body.append(p);console.error(error)}
+const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{
+ const dt=Math.min(clock.getDelta(),.05);ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(models,true)[0];
+ models.forEach((model,i)=>{let node=hit?.object;while(node&&node!==model)node=node.parent;const active=node===model;const home=i===0?.035:-.035;
+  const ry=active&&!reduced.matches?home+.23:home,rx=active&&!reduced.matches?-.09:0;
+  model.rotation.y=THREE.MathUtils.damp(model.rotation.y,ry,7,dt);model.rotation.x=THREE.MathUtils.damp(model.rotation.x,rx,7,dt);
+ });renderer.render(scene,camera);
+});
+</script></body></html>

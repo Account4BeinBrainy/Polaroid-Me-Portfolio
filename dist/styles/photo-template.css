@@ -1,0 +1,26 @@
+/* Same ratios as the GLB/template. Use for individual photographs inside the modal.
+   Do not apply this frame to the large borderless slideshow. */
+.photo-template {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--polaroid-aspect);
+  margin: 0;
+  background: var(--polaroid-paper);
+  border-radius: var(--polaroid-radius-x) / var(--polaroid-radius-y);
+  box-shadow: 0 .7px 1px rgb(0 0 0 / .23), 0 4px 9px rgb(0 0 0 / .15), 0 12px 24px rgb(0 0 0 / .06);
+}
+.photo-template__image {
+  position: absolute;
+  left: var(--polaroid-side-border);
+  top: var(--polaroid-top-border);
+  width: var(--polaroid-image-width);
+  aspect-ratio: 1;
+  background: var(--polaroid-image-base);
+  overflow: hidden;
+  box-shadow: inset .65px 1px 2.6px rgb(0 0 0 / .15);
+}
+.photo-template__image img { width:100%;height:100%;display:block;object-fit:var(--polaroid-image-fit); }
+.photo-template__image:empty { background: var(--polaroid-image-base); }
+
+.photo-template figcaption {position:absolute;left:var(--polaroid-side-border);right:var(--polaroid-side-border);top:var(--polaroid-caption-top);bottom:0;margin:0;display:grid;place-items:center;text-align:center;overflow:hidden;background:var(--polaroid-paper);}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F8F7F3" />
+    <meta name="description" content="一台相机，一张尚未定格的照片。个人网站首屏交互雏形。" />
+    <title>Polaroid · A quiet introduction</title>
+    <script src="./iris-arrival.js?v=loading-20261001-1"></script>
+    <script type="module" src="./mobile-history.js"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='2' width='22' height='28' rx='1' fill='%23F5F2EA'/%3E%3Crect x='8' y='5' width='16' height='17' fill='%23242120'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css?v=camera-sound-20261005-2" />
+    <link rel="stylesheet" href="./global-menu.css?v=accessories-album-20261004-1" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./camera-3d.js?v=camera-menu-20261005-1"></script>
+
+    <link rel="stylesheet" href="./styles/polaroid-tokens.css?v=integrated-20260927-3">
+<link rel="stylesheet" href="./styles/photo-decks.css?v=integrated-20260927-3"><link rel="stylesheet" href="./styles/camera-intro.css?v=camera-menu-modal-20260930-2">
+<link rel="preload" href="./public/fonts/SoundSeekers-Regular.otf" as="font" type="font/otf" crossorigin></head>
+  <body>
+    <section id="camera-page">
+      <button id="camera-sound-toggle" type="button" aria-label="Turn sound off" aria-pressed="true" data-sound="on"><img src="./assets/ui/minimal_music_note_button.png" alt="" aria-hidden="true"></button>
+      <main class="polaroid-landing" aria-label="Polaroid 相机交互">
+      <div class="camera-stage" data-phase="idle" data-state="idle">
+        <div class="cast-shadow" aria-hidden="true" hidden></div>
+        <div class="contact-shadow" aria-hidden="true" hidden></div>
+        <div class="camera-contact-shadow" aria-hidden="true"></div>
+
+        <!-- Static 3D display is independent of the legacy hover/press container. -->
+        <div class="camera-3d-layer" id="camera-3d" data-load-state="loading" tabindex="0" role="group" aria-label="拖动查看相机，左右方向键旋转，R 回正"></div>
+
+        <div class="camera-object" hidden inert aria-hidden="true">
+          <!-- The front-view cutout also fills the lower lip behind the paper.
+               This second copy keeps the original appearance intact at rest. -->
+          <div class="camera-back camera-frame is-legacy-camera" aria-hidden="true">
+            <img src="./public/assets/polaroid-front-cutout.png" alt="" draggable="false" width="459" height="438" />
+          </div>
+
+          <div class="photo-clip" aria-hidden="true">
+            <div class="photo-card">
+              <div class="photo-image"></div>
+            </div>
+          </div>
+
+          <!-- The front photograph covers the paper above the actual slot.
+               Only the paper's path through the lower lip is open. -->
+          <div class="camera-image camera-frame is-legacy-camera" aria-hidden="true">
+            <img src="./public/assets/polaroid-front-cutout.png" alt="" draggable="false" width="459" height="438" />
+          </div>
+
+          <button class="camera-trigger" type="button" aria-label="点击 Polaroid 相机，打印一张照片" aria-describedby="camera-instructions"></button>
+        </div>
+      </div>
+      <button id="shutter-keyboard" class="sr-only" type="button">按下红色快门，打印相纸</button>
+      <p id="camera-instructions" class="sr-only" hidden>点击相机或按 Enter、空格键，让照片从底部出片口滑出。</p>
+      <p class="sr-only" role="status" aria-live="polite" id="camera-status"></p>
+      </main>
+    </section>
+    <section id="film-box-page" hidden aria-label="Portfolio categories">
+      <div class="film-box-canvas" aria-hidden="true"></div>
+      <nav class="film-box-links" aria-label="Portfolio categories">
+        <a class="film-box-link" href="./professional-projects.html" aria-label="Professional Projects"></a>
+        <a class="film-box-link" href="./certification-achievement.html" aria-label="Certification and Achievement"></a>
+        <a class="film-box-link" href="./life-journey.html" aria-label="Life and Journey"></a>
+      </nav>
+      <div class="film-box-error" role="alert" hidden>
+        <p>第二页加载失败：<span data-error></span></p>
+        <button type="button" data-retry>重试</button>
+        <button type="button" data-return>返回相机</button>
+      </div>
+    </section>
+    <script type="module" src="./global-menu.js?v=camera-menu-20261005-1"></script>
+    <script src="./click-spark.js?v=integrated-20260927-3" defer></script>
+</body>
+</html>

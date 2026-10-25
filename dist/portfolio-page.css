@@ -1,0 +1,48 @@
+@font-face { font-family: 'Sound Seekers'; src: url('./public/fonts/SoundSeekers-Regular.otf') format('opentype'); font-display: block; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-content: center; background: #F8F7F3; color: #171717; font: 20px system-ui; }
+h1 { text-align: center; }
+.portfolio-back { position: fixed; z-index: 10; top: 28px; right: 30px; display: flex; align-items: center; gap: 8px; color: #000; text-decoration: none; font: 32px 'Sound Seekers', cursive; -webkit-tap-highlight-color: transparent; }
+.portfolio-back svg { width: 74px; height: 48px; overflow: visible; pointer-events: none; }
+@media (max-width: 600px) { .portfolio-back { top: max(22px, env(safe-area-inset-top)); right: max(22px, env(safe-area-inset-right)); font-size: 27px; } .portfolio-back svg { width: 62px; } }
+@media (max-width:768px), (orientation:landscape) and (max-height:500px) { .portfolio-back{top:var(--safe-top,max(22px,env(safe-area-inset-top)));right:var(--safe-right,max(22px,env(safe-area-inset-right)));min-height:44px;font-size:var(--font-control,27px)} }
+/* Shared by page links and both glass-dialog Back controls. */
+:is(.back-button, .portfolio-back, .pd-back, .certification-details-back),
+:is(.back-button, .portfolio-back, .pd-back, .certification-details-back):is(:focus, :active, :focus-visible) {
+  appearance: none; -webkit-appearance: none;
+  border: 0; outline: 0; box-shadow: none; background: transparent;
+}
+:is(.back-button, .portfolio-back, .pd-back, .certification-details-back) {
+  cursor: pointer;
+  transition: transform .25s ease, opacity .25s ease;
+}
+:is(.back-button, .portfolio-back, .pd-back, .certification-details-back):hover {
+  transform: translateX(-5px) scale(1.03); opacity: .82;
+}
+:is(.back-button, .portfolio-back, .pd-back, .certification-details-back):focus-visible { opacity: .82; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.back-button, .portfolio-back, .pd-back, .certification-details-back) { transition: none; }
+}
+
+.professional-projects-page { display:block; overflow-x:hidden; }
+.professional-projects { min-height:100svh; display:grid; place-items:center; padding:24px; }
+.deck-stage { position:relative; width:min(1600px,100%); height:calc(100svh - 48px); min-height:560px; isolation:isolate; }
+.deck-stage canvas { position:absolute; inset:0; display:block; width:100%; height:100%; }
+.project-hover-annotation { position:absolute; z-index:2; width:clamp(220px,26vw,350px); color:#000; pointer-events:none; opacity:0; transform:translate(-100%,0) translateY(10px); transition:opacity .2s ease,transform .2s ease; text-align:right; font:clamp(24px,2.2vw,34px) 'Sound Seekers',cursive; line-height:1.1; }
+.project-hover-annotation.is-visible { opacity:.9; transform:translate(-100%,0) translateY(0); }
+.project-fold-annotation {border:0;background:none;padding:0;color:#000;cursor:pointer;}
+.project-fold-annotation.is-visible { opacity:1;pointer-events:auto; }
+.project-hover-annotation svg { display:block; width:76px; height:41px; margin:24px 0 0 auto; overflow:visible; fill:none; stroke:#000; stroke-width:6.43; stroke-linecap:round; stroke-linejoin:round; transform:rotate(28deg); }
+.deck-status { position:absolute; inset:0; display:grid; place-items:center; color:#72766f; font:13px system-ui,sans-serif; }
+.deck-status:empty { display:none; }
+@media (max-width:650px) {
+  .professional-projects { min-height:auto; padding:70px 10px 22px; }
+  .deck-stage { height:calc(100svh - 92px); min-height:0; }
+  .project-hover-annotation { width:clamp(128px,36vw,160px); font-size:clamp(17px,4.5vw,21px); }
+  .project-hover-annotation svg { width:clamp(46px,13vw,58px); height:auto; margin-top:9px; }
+}
+@media (orientation:landscape) and (max-height:500px) {
+  .professional-projects {min-height:100svh;padding:68px 10px 12px}
+  .deck-stage {height:calc(100dvh - 80px);min-height:0}
+}
+@media (prefers-reduced-motion:reduce){.project-hover-annotation{transition:none}}
